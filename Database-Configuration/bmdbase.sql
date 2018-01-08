@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 07. Jan 2018 um 21:26
+-- Erstellungszeit: 08. Jan 2018 um 16:13
 -- Server-Version: 10.1.28-MariaDB
 -- PHP-Version: 7.1.11
 
@@ -49,19 +49,32 @@ CREATE TABLE `bmdbase` (
   `bewertung` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 --
--- Metadaten
---
-USE `phpmyadmin`;
-
---
--- Metadaten für Tabelle bmdbase
+-- Daten für Tabelle `bmdbase`
 --
 
+INSERT INTO `bmdbase` (`id`, `titel`, `title`, `regie`, `genre`, `schauspieler`, `produzent`, `studio`, `fsk`, `sprache`, `laenge`, `date`, `land`, `farbe`, `bewertung`) VALUES
+(1, 'Gladiator', 'Gladiator', 'Ridley Scott', 'Drama, Action, Adventure', 'Russel Crowe', NULL, NULL, 18, 'englisch, deutsch', 155, 959212800, 'Amerika', NULL, 8);
+
 --
--- Metadaten für Datenbank bmdbase
+-- Indizes der exportierten Tabellen
 --
+
+--
+-- Indizes für die Tabelle `bmdbase`
+--
+ALTER TABLE `bmdbase`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `bmdbase`
+--
+ALTER TABLE `bmdbase`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

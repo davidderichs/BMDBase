@@ -3,9 +3,11 @@ import java.util.ArrayList;
 
 /**
  * Created by David Derichs on 07.01.2018.
+ * Datenbank-Klasse, die Datenbank-Methoden für das Film-Register bereitstellt.
  */
 
 public class DatabaseConnection {
+
     private Connection connect = null;
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
@@ -46,8 +48,8 @@ public class DatabaseConnection {
         // Result set get the result of the SQL query
         resultSet = statement
                 .executeQuery("select * from bmdbase.bmdbase");
-//        writeMetaData(resultSet);
-//        writeResultSet(resultSet);
+        writeMetaData(resultSet);
+        writeResultSet(resultSet);
         return convertToJavaObjectList(resultSet);
     }
 
@@ -59,8 +61,8 @@ public class DatabaseConnection {
             // which starts at 1
             // e.g. resultSet.getSTring(2);
             String id = resultSet.getString("id");
-            String titel = resultSet.getString("titel");
-            String title = resultSet.getString("title");
+            String titelDE = resultSet.getString("titel");
+            String titleEN = resultSet.getString("title");
             String regie = resultSet.getString("regie");
             String genre = resultSet.getString("genre");
             String schauspieler = resultSet.getString("schauspieler");
@@ -75,7 +77,7 @@ public class DatabaseConnection {
             int bewertung = resultSet.getInt("bewertung");
             filmList.add(
                     // public Film(String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String besatzung
-                    new Film(titel, title, (int) date.getYear(), fsk, laenge, sprache, schauspieler)
+                    new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler)
             );
         }
         return filmList;

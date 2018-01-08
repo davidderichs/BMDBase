@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Controller extends Application {
 	
 	/**
@@ -138,6 +140,16 @@ public class Controller extends Application {
 	
 
 	public static void main(String[] args) {
-		launch(args);
+
+        launch(args);
+        DatabaseConnection connection = null;
+        try {
+            connection = new DatabaseConnection();
+            ArrayList<Film> list = connection.getAllFilmsFromDatabse();
+            System.out.println(list);
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 }

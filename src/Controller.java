@@ -1,19 +1,12 @@
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -134,22 +127,22 @@ public class Controller extends Application {
 		primaryStage.setTitle("Filmregister");
 	    primaryStage.setScene(new Scene(root, 800, 600));
 	    primaryStage.show();
-		
-	}
-	
-	
 
-	public static void main(String[] args) {
-
-        launch(args);
+        // TEST für die Datenbank
         DatabaseConnection connection = null;
         try {
             connection = new DatabaseConnection();
-            ArrayList<Film> list = connection.getAllFilmsFromDatabse();
+            ArrayList<Film> list = connection.getAllFilms();
             System.out.println(list);
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+	}
+	
+	
+
+	public static void main(String[] args) {
+        launch(args);
 	}
 }

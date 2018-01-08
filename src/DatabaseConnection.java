@@ -22,11 +22,43 @@ public class DatabaseConnection {
                         + "user=root");
     }
 
-    public void getFilmByID(int id) throws SQLException {
+
+    public void addFilm(Film film) throws SQLException{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
     }
 
+    public void updateFilm(Film film) throws SQLException{
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+    }
+
+    public void removeFilm(Film film) throws SQLException{
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+    }
+
+    public void removeFilmByID(int id) throws SQLException{
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+    }
+
+    public void removeFilmByTitleDE(String title) throws SQLException{
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+    }
+
+    public void removeFilmByTitleEN(String title) throws SQLException{
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+    }
+
+    public Film getFilmByID(int id) throws SQLException {
+        statement = connect.createStatement();
+        resultSet = statement
+                .executeQuery("select * from bmdbase.bmdbase where id = " + id);
+        return convertToJavaObject(resultSet);
+    }
     public void getFilmByTitleDE(String title) throws SQLException{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -37,20 +69,46 @@ public class DatabaseConnection {
         statement = connect.createStatement();
     }
 
-    public void addFilmToDatabase(Film film) throws SQLException{
-        // Statements allow to issue SQL queries to the database
-        statement = connect.createStatement();
-    }
-
-    public ArrayList<Film> getAllFilmsFromDatabse() throws Exception{
+    public ArrayList<Film> getAllFilms() throws Exception{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         // Result set get the result of the SQL query
         resultSet = statement
                 .executeQuery("select * from bmdbase.bmdbase");
-        writeMetaData(resultSet);
-        writeResultSet(resultSet);
+        printDatabaseInformation(resultSet);
+        printDatasetInformation(resultSet);
         return convertToJavaObjectList(resultSet);
+    }
+
+
+    private Film convertToJavaObject(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            String id = resultSet.getString("id");
+            String titelDE = resultSet.getString("titel");
+            String titleEN = resultSet.getString("title");
+            String regie = resultSet.getString("regie");
+            String genre = resultSet.getString("genre");
+            String schauspieler = resultSet.getString("schauspieler");
+            String produzent = resultSet.getString("produzent");
+            String studio = resultSet.getString("studio");
+            int fsk = resultSet.getInt("fsk");
+            String sprache = resultSet.getString("sprache");
+            int laenge = resultSet.getInt("laenge");
+            Date date = resultSet.getDate("date");
+            String land = resultSet.getString("land");
+            boolean farbe = resultSet.getBoolean("farbe");
+            int bewertung = resultSet.getInt("bewertung");
+
+            Film film = new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
+
+            return film;
+        } else {
+            return null;
+        }
     }
 
     private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws Exception{
@@ -76,24 +134,13 @@ public class DatabaseConnection {
             boolean farbe = resultSet.getBoolean("farbe");
             int bewertung = resultSet.getInt("bewertung");
             filmList.add(
-                    // public Film(String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String besatzung
                     new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler)
             );
         }
         return filmList;
     }
 
-    public void updateFilmOnDatabase(Film film) throws SQLException{
-        // Statements allow to issue SQL queries to the database
-        statement = connect.createStatement();
-    }
-
-    public void removeFilmFromDatabase(Film film) throws SQLException{
-        // Statements allow to issue SQL queries to the database
-        statement = connect.createStatement();
-    }
-
-    private void writeMetaData(ResultSet resultSet) throws SQLException {
+    private void printDatabaseInformation(ResultSet resultSet) throws SQLException {
         //  Now get some metadata from the database
         // Result set get the result of the SQL query
         System.out.println("The columns in the table are: ");
@@ -103,7 +150,7 @@ public class DatabaseConnection {
         }
     }
 
-    private void writeResultSet(ResultSet resultSet) throws SQLException {
+    private void printDatasetInformation(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
             // It is possible to get the columns via name
@@ -143,10 +190,8 @@ public class DatabaseConnection {
     }
 
     /**
-     * BeispielFunktion
+     * BeispielFunktionen
      */
-//    public void readDataBase() throws Exception {
-//        try {
 //            // PreparedStatements can use variables and are more efficient
 //            preparedStatement = connect
 //                    .prepareStatement("insert into  feedback.comments values (default, ?, ?, ?, ? , ?, ?)");
@@ -163,7 +208,7 @@ public class DatabaseConnection {
 //            preparedStatement = connect
 //                    .prepareStatement("SELECT myuser, webpage, datum, summary, COMMENTS from feedback.comments");
 //            resultSet = preparedStatement.executeQuery();
-//            writeResultSet(resultSet);
+//            printDatasetInformation(resultSet);
 //
 //            // Remove again the insert comment
 //            preparedStatement = connect
@@ -173,16 +218,7 @@ public class DatabaseConnection {
 //
 //            resultSet = statement
 //                    .executeQuery("select * from feedback.comments");
-//            writeMetaData(resultSet);
-//
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
+//            printDatabaseInformation(resultSet);
 //            close();
-//        }
-//
-//    }
-
-
 
 }

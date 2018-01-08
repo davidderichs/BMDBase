@@ -9,8 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-
 public class Controller extends Application {
 	
 	/**
@@ -127,19 +125,7 @@ public class Controller extends Application {
 		primaryStage.setTitle("Filmregister");
 	    primaryStage.setScene(new Scene(root, 800, 600));
 	    primaryStage.show();
-
-        // TEST für die Datenbank
-        DatabaseConnection connection = null;
-        try {
-            connection = new DatabaseConnection();
-            ArrayList<Film> list = connection.getAllFilms();
-            connection.close();
-        } catch (Exception e) {
-            System.out.println("Fehler mit der Datenbank:");
-            e.printStackTrace();
-        }
 	}
-	
 	
 
 	public static void main(String[] args) {

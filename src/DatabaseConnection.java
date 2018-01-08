@@ -72,13 +72,7 @@ public class DatabaseConnection {
         statement = connect.createStatement();
         // Result set get the result of the SQL query
         resultSet = statement.executeQuery("select * from bmdbase.bmdbase");
-        printDatabaseInformation(resultSet);
-        printDatasetInformation(resultSet);
-        if (resultSet.next()){
-            return convertToJavaObjectList(resultSet);
-        } else {
-            return null;
-        }
+        return convertToJavaObjectList(resultSet);
     }
 
     private Film convertToJavaObject(ResultSet resultSet) throws SQLException {
@@ -102,14 +96,30 @@ public class DatabaseConnection {
             boolean farbe = resultSet.getBoolean("farbe");
             int bewertung = resultSet.getInt("bewertung");
 
-            Film film = new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
-            return film;
+            return new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
     }
 
     private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws Exception{
         ArrayList<Film> filmList = new ArrayList<Film>();
         while (resultSet.next()) {
-            filmList.add( convertToJavaObject(resultSet) );
+            String id = resultSet.getString("id");
+            String titelDE = resultSet.getString("titel");
+            String titleEN = resultSet.getString("title");
+            String regie = resultSet.getString("regie");
+            String genre = resultSet.getString("genre");
+            String schauspieler = resultSet.getString("schauspieler");
+            String produzent = resultSet.getString("produzent");
+            String studio = resultSet.getString("studio");
+            int fsk = resultSet.getInt("fsk");
+            String sprache = resultSet.getString("sprache");
+            int laenge = resultSet.getInt("laenge");
+            Date date = resultSet.getDate("date");
+            String land = resultSet.getString("land");
+            boolean farbe = resultSet.getBoolean("farbe");
+            int bewertung = resultSet.getInt("bewertung");
+            System.out.println("blablubb");
+            Film film = new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
+            filmList.add( film );
         }
         return filmList;
     }

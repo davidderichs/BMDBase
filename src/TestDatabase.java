@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Created by David Derichs on 08.01.2018.
  */
@@ -10,7 +8,7 @@ public class TestDatabase {
         DatabaseConnection connection = null;
         try {
             connection = new DatabaseConnection();
-            ArrayList<Film> list = connection.getAllFilms();
+            System.out.println(connection.getAllFilms());
             connection.close();
         } catch (Exception e) {
             System.out.println("Fehler mit der Datenbank:");

@@ -22,7 +22,6 @@ public class DatabaseConnection {
                         + "user=root");
     }
 
-
     public void addFilm(Film film) throws SQLException{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -55,8 +54,7 @@ public class DatabaseConnection {
 
     public Film getFilmByID(int id) throws SQLException {
         statement = connect.createStatement();
-        resultSet = statement
-                .executeQuery("select * from bmdbase.bmdbase where id = " + id);
+        resultSet = statement.executeQuery("select * from bmdbase.bmdbase where id = " + id);
         return convertToJavaObject(resultSet);
     }
     public void getFilmByTitleDE(String title) throws SQLException{
@@ -73,16 +71,17 @@ public class DatabaseConnection {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         // Result set get the result of the SQL query
-        resultSet = statement
-                .executeQuery("select * from bmdbase.bmdbase");
+        resultSet = statement.executeQuery("select * from bmdbase.bmdbase");
         printDatabaseInformation(resultSet);
         printDatasetInformation(resultSet);
-        return convertToJavaObjectList(resultSet);
+        if (resultSet.next()){
+            return convertToJavaObjectList(resultSet);
+        } else {
+            return null;
+        }
     }
 
-
     private Film convertToJavaObject(ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
@@ -104,38 +103,13 @@ public class DatabaseConnection {
             int bewertung = resultSet.getInt("bewertung");
 
             Film film = new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
-
             return film;
-        } else {
-            return null;
-        }
     }
 
     private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws Exception{
         ArrayList<Film> filmList = new ArrayList<Film>();
         while (resultSet.next()) {
-            // It is possible to get the columns via name
-            // also possible to get the columns via the column number
-            // which starts at 1
-            // e.g. resultSet.getSTring(2);
-            String id = resultSet.getString("id");
-            String titelDE = resultSet.getString("titel");
-            String titleEN = resultSet.getString("title");
-            String regie = resultSet.getString("regie");
-            String genre = resultSet.getString("genre");
-            String schauspieler = resultSet.getString("schauspieler");
-            String produzent = resultSet.getString("produzent");
-            String studio = resultSet.getString("studio");
-            int fsk = resultSet.getInt("fsk");
-            String sprache = resultSet.getString("sprache");
-            int laenge = resultSet.getInt("laenge");
-            Date date = resultSet.getDate("date");
-            String land = resultSet.getString("land");
-            boolean farbe = resultSet.getBoolean("farbe");
-            int bewertung = resultSet.getInt("bewertung");
-            filmList.add(
-                    new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler)
-            );
+            filmList.add( convertToJavaObject(resultSet) );
         }
         return filmList;
     }

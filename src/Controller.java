@@ -133,9 +133,9 @@ public class Controller extends Application {
         try {
             connection = new DatabaseConnection();
             ArrayList<Film> list = connection.getAllFilms();
-            System.out.println(list);
             connection.close();
         } catch (Exception e) {
+            System.out.println("Fehler mit der Datenbank:");
             e.printStackTrace();
         }
 	}

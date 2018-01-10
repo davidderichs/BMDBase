@@ -190,12 +190,12 @@ public class Film
 	{
 		if(darsteller.length() < 4) 
 		{
-			System.err.println("Der Name des Darstellers ist zu klein. Eine Sprache ein, die mehr als 3 Buchstaben besitzt!!!");
+			System.err.println("Der Name des Darstellers ist zu klein. Gegbe eine anderen Namen an, der mehr als 3 Buchstaben besitzt!!!");
 			throw new FilmDatenException();
 		}
 		else if(darsteller.length() > 25)
 		{
-			System.err.println("Der Name des Darstellers ist zu groß. Gebe eine Sprache ein, die weniger als 25 Buchstaben hat.");
+			System.err.println("Der Name des Darstellers ist zu groß. Gegbe eine anderen Namen an, der weniger als 25 Buchstaben hat.");
 			throw new FilmDatenException();
 		}
 		else this.darsteller = darsteller;

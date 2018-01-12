@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 /**
  * Created by David Derichs on 07.01.2018.
- * Datenbank-Klasse, die Datenbank-Methoden für das Film-Register bereitstellt.
+ * Datenbank-Klasse, die Datenbank-Methoden fÃ¼r das Film-Register bereitstellt.
  */
 
 public class DatabaseConnection {
@@ -52,7 +52,7 @@ public class DatabaseConnection {
         statement = connect.createStatement();
     }
 
-    public Film getFilmByID(int id) throws SQLException {
+    public Film getFilmByID(int id) throws SQLException, FilmDatenException {
         statement = connect.createStatement();
         resultSet = statement.executeQuery("select * from bmdbase.bmdbase where id = " + id);
         return convertToJavaObject(resultSet);
@@ -75,7 +75,7 @@ public class DatabaseConnection {
         return convertToJavaObjectList(resultSet);
     }
 
-    private Film convertToJavaObject(ResultSet resultSet) throws SQLException {
+    private Film convertToJavaObject(ResultSet resultSet) throws SQLException, FilmDatenException {
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1

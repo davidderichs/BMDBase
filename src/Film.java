@@ -1,5 +1,5 @@
 /**
- * Die Klasse stellt das Film Objekt mit ihren Methoden bereit. 
+ * Die Klasse stellt das Film Objekt mit ihren Methoden bereit.
  */
 public class Film 
 {
@@ -21,19 +21,17 @@ public class Film
 	// Wichtige Darsteller
 	private  String darsteller;
 /*Ende der Klassen Variablen -----------------------------------------*/
-	/*Hir beginnen die Methoden
-	 * 
-	 */
+
 	/**
-	 * Der Konstruktor für die Klasse {@link #Items(String, int, int, int, String, String)}
+	 *
 	 * @param nameDE
-	 * @param nameEN  
+	 * @param nameEN
 	 * @param jahr
 	 * @param fsk
 	 * @param laenge
 	 * @param sprache
-	 * @param besatzung
-	 * @throws FilmDatenException  
+	 * @param darsteller
+	 * @throws FilmDatenException
 	 */
 	public Film(String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String darsteller) throws FilmDatenException   
 	{
@@ -60,10 +58,11 @@ public class Film
 			throw new FilmDatenException();
 		}	
 	}
-	
+
 	/**
 	 * Set Methode für den Deutschen Titel des Films
-	 * @param name
+	 * @param nameDE
+	 * @throws FilmDatenException
 	 */
 	public void setTitelDE(String nameDE) throws FilmDatenException
 	{
@@ -87,9 +86,11 @@ public class Film
 	{
 		return titelDE;
 	}
+
 	/**
 	 * Set Methode für den Deutschen Titel des Films
-	 * @param name
+	 * @param nameEN
+	 * @throws FilmDatenException
 	 */
 	public void setTitelEN(String nameEN) throws FilmDatenException
 	{
@@ -174,6 +175,7 @@ public class Film
 		}
 		else this.sprache = sprache;
 	}
+
 	/**
 	 *Get Methode für Sprache 
 	 * @return
@@ -182,9 +184,11 @@ public class Film
 	{
 		return sprache;
 	}
+
 	/**
-	 * Stellt die Set Methode für Besatzung 
-	 * @param besatzung
+	 * Stellt die Set Methode für Darsteller
+	 * @param darsteller
+	 * @throws FilmDatenException
 	 */
 	public void setDarsteller(String darsteller) throws FilmDatenException
 	{
@@ -231,7 +235,7 @@ public class Film
 	{
 		return this.fsk;
 	}
-/*Hir enden die Paramete für den Datentype Film	
+/*Hir enden die Paramete für den Datentype Film
 *-----------------------------------------------------------------------------*/
 	/**
 	 * Die Überschreibene equals() Methode
@@ -248,7 +252,7 @@ public class Film
 	public boolean equals(Object m) 
 	{
 		//Hir wird Objekt zu Film gekastet und zu f2 zugewiesen
-		Film m2 =(Film)m; 
+		Film m2 =(Film)m;
 		/*Die if Bedingung prüft, ob die Einzelnen bestandteile gleich sind.
 		 * Titel muss mit .equals verglichen werden, weil Tiel String(Objekt) ist
 		 */

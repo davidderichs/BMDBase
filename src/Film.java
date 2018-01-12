@@ -6,6 +6,7 @@ public class Film
 	/*
 	 * Hir stehen die Klassenvariablen	
 	 */
+	private int id = 0;
 	//Jahr der Veröffentlichung
 	private  int jahr = 1871;
 	// Länge des Films
@@ -33,7 +34,7 @@ public class Film
 	 * @param darsteller
 	 * @throws FilmDatenException
 	 */
-	public Film(String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String darsteller) throws FilmDatenException   
+	public Film(String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String darsteller) throws FilmDatenException
 	{
 		titelDE = nameDE;
 		titelEN = nameEN;
@@ -58,6 +59,41 @@ public class Film
 			throw new FilmDatenException();
 		}	
 	}
+
+    public Film(int id, String nameDE, String nameEN, int jahr, int fsk, int laenge, String sprache,String darsteller) throws FilmDatenException
+    {
+        this.id = id;
+        this.titelDE = nameDE;
+        this.titelEN = nameEN;
+        this.jahr = jahr;
+        this.laenge = laenge;
+        this.sprache = sprache;
+        this.fsk = fsk;
+        this.darsteller = darsteller;
+
+        try
+        {
+            this.setFsk(fsk);
+            this.setTitelDE(nameDE);
+            this.setTitelEN(nameEN);
+            this.setLaenge(laenge);
+            this.setJahr(jahr);
+            this.setSprache(sprache);
+            this.setDarsteller(darsteller);
+        }
+        catch(FilmDatenException ex)
+        {
+            throw new FilmDatenException();
+        }
+    }
+
+	public int getID(){
+	    return this.id;
+    }
+
+    public void setID(int id){
+	    this.id=id;
+    }
 
 	/**
 	 * Set Methode für den Deutschen Titel des Films

@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -22,49 +23,93 @@ public class DatabaseConnection {
                         + "user=root");
     }
 
-    public void addFilm(Film film) throws SQLException{
-        // Statements allow to issue SQL queries to the database
+    public boolean addFilm(Film film) throws SQLException{
         statement = connect.createStatement();
+        String statementStart = "insert into  bmdbase.bmdbase (titel, title, schauspieler, fsk, sprache, laenge, date) ";
+        String titel =  "'"+film.getTitelDE()+"'";
+        String title =  "'"+film.getTitelEN()+"'";
+        String schauspieler = "'"+film.getDarsteller()+"'";
+        String fsk =  "'"+Integer.toString(film.getFsk())+"'";
+        String sprache =  "'"+film.getSprache()+"'";
+        String laenge =  "'"+Integer.toString(film.getLaenge())+"'";
+        String date =  "'"+Integer.toString(film.getJahr())+"-01-01"+"'";
+        String statementEnd = "VALUES ("
+                +titel+", "
+                +title+", "
+                +schauspieler+", "
+                +fsk+", "
+                +sprache+", "
+                +laenge+", "
+                +date
+                +")";
+        return (statement.executeUpdate(statementStart+statementEnd+";")==1);
     }
 
-    public void updateFilm(Film film) throws SQLException{
-        // Statements allow to issue SQL queries to the database
+    public boolean updateFilm(Film film) throws SQLException{
         statement = connect.createStatement();
+        String titel =  "'"+film.getTitelDE()+"'";
+        String title =  "'"+film.getTitelEN()+"'";
+        String schauspieler = "'"+film.getDarsteller()+"'";
+        String fsk =  "'"+Integer.toString(film.getFsk())+"'";
+        String sprache =  "'"+film.getSprache()+"'";
+        String laenge =  "'"+Integer.toString(film.getLaenge())+"'";
+        String date =  "'"+Integer.toString(film.getJahr())+"-01-01"+"'";
+        String statementStart = "UPDATE bmdbase.bmdbase SET titel= "+titel+", title="+title+", schauspieler="+schauspieler+", fsk="+fsk+", sprache="+sprache+", laenge="+laenge+", date="+date;
+        String statementEnd = "WHERE id = "+film.getID();
+        return (statement.executeUpdate(statementStart+statementEnd+";")==1);
     }
 
-    public void removeFilm(Film film) throws SQLException{
+    public boolean removeFilm(Film film) throws SQLException{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
+        System.out.println(film.getID());
+        if (film.getID()>0){
+            return removeFilmByID(film.getID());
+        } if (film.getTitelDE().length()>0){
+            return removeFilmByTitleDE(film.getTitelDE());
+        } if (film.getTitelEN().length()>0){
+            return removeFilmByTitleEN(film.getTitelEN());
+        }
+        return false;
     }
 
-    public void removeFilmByID(int id) throws SQLException{
-        // Statements allow to issue SQL queries to the database
+    public boolean removeFilmByID(int id) throws SQLException{
         statement = connect.createStatement();
+        String statementStart = "DELETE FROM bmdbase.bmdbase WHERE id= '"+id+"' ;";
+        System.out.println(statementStart);
+        return (statement.executeUpdate(statementStart)==1);
     }
 
-    public void removeFilmByTitleDE(String title) throws SQLException{
-        // Statements allow to issue SQL queries to the database
+    public boolean removeFilmByTitleDE(String title) throws SQLException{
         statement = connect.createStatement();
+        String statementStart = "DELETE FROM bmdbase.bmdbase WHERE titel= '"+title+"' ;";
+        System.out.println(statementStart);
+        return (statement.executeUpdate(statementStart)==1);
     }
 
-    public void removeFilmByTitleEN(String title) throws SQLException{
-        // Statements allow to issue SQL queries to the database
+    public boolean removeFilmByTitleEN(String title) throws SQLException{
         statement = connect.createStatement();
+        String statementStart = "DELETE FROM bmdbase.bmdbase WHERE title= '"+title+"' ;";
+        return (statement.executeUpdate(statementStart)==1);
     }
 
     public Film getFilmByID(int id) throws SQLException, FilmDatenException {
         statement = connect.createStatement();
-        resultSet = statement.executeQuery("select * from bmdbase.bmdbase where id = " + id);
+        resultSet = statement.executeQuery("select * from bmdbase.bmdbase where id = " + id + ";");
         return convertToJavaObject(resultSet);
     }
-    public void getFilmByTitleDE(String title) throws SQLException{
+    public Film getFilmByTitleDE(String titel) throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
+        resultSet = statement.executeQuery("select * from bmdbase.bmdbase where titel = '" + titel + "';");
+        return convertToJavaObject(resultSet);
     }
 
-    public void getFilmByTitleEN(String title) throws SQLException{
+    public Film getFilmByTitleEN(String title) throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
+        resultSet = statement.executeQuery("select * from bmdbase.bmdbase where title = '" + title + "';");
+        return convertToJavaObject(resultSet);
     }
 
     public ArrayList<Film> getAllFilms() throws Exception{
@@ -80,6 +125,7 @@ public class DatabaseConnection {
             // also possible to get the columns via the column number
             // which starts at 1
             // e.g. resultSet.getSTring(2);
+            resultSet.next();
             String id = resultSet.getString("id");
             String titelDE = resultSet.getString("titel");
             String titleEN = resultSet.getString("title");
@@ -96,7 +142,7 @@ public class DatabaseConnection {
             boolean farbe = resultSet.getBoolean("farbe");
             int bewertung = resultSet.getInt("bewertung");
 
-            return new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
+            return new Film(titelDE, titleEN, Integer.parseInt(getYearFromDate(date)), fsk, laenge, sprache, schauspieler);
     }
 
     private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws Exception{
@@ -113,15 +159,22 @@ public class DatabaseConnection {
             int fsk = resultSet.getInt("fsk");
             String sprache = resultSet.getString("sprache");
             int laenge = resultSet.getInt("laenge");
-            Date date = resultSet.getDate("date");
             String land = resultSet.getString("land");
             boolean farbe = resultSet.getBoolean("farbe");
             int bewertung = resultSet.getInt("bewertung");
-            System.out.println("blablubb");
-            Film film = new Film(titelDE, titleEN, (int) date.getYear(), fsk, laenge, sprache, schauspieler);
+
+            Date date = resultSet.getDate("date");
+            int year = Integer.parseInt(getYearFromDate(date));
+
+            Film film = new Film(titelDE, titleEN, year, fsk, laenge, sprache, schauspieler);
             filmList.add( film );
         }
         return filmList;
+    }
+
+    private String getYearFromDate(Date date){
+        SimpleDateFormat formatNowYear = new SimpleDateFormat("yyyy");
+        return formatNowYear.format(date);
     }
 
     private void printDatabaseInformation(ResultSet resultSet) throws SQLException {

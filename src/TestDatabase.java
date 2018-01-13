@@ -1,10 +1,3 @@
-import com.sun.prism.d3d.D3DTextureData;
-
-import javax.xml.crypto.Data;
-import javax.xml.soap.Text;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /**
  * Created by David Derichs on 08.01.2018.
  */

@@ -156,7 +156,7 @@ public class Film
 	 */
 	public void setJahr(int jahr) throws FilmDatenException
 	{
-		if (jahr >= 1900) this.jahr = jahr;
+		if (jahr >= 1900 || jahr == 0) this.jahr = jahr;
 		else 
 		{
 			System.out.println("Das Datum ist Flasch!!!,\n "
@@ -178,7 +178,7 @@ public class Film
 	 */
 	public void setLaenge(int laenge) throws FilmDatenException
 	{	
-		if (laenge > 0) this.laenge = laenge;
+		if (laenge >= 0) this.laenge = laenge;
 		else 
 		{
 			System.err.println("Gege einen gültigen Wert größer als 0 ein!!!");

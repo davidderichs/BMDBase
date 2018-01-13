@@ -253,9 +253,8 @@ public class Controller extends Application implements Initializable {
                 try {
                     register.deleteFilm(createFilmObjectFromInputFields());
                     eraseTextFields();
-                } catch (FilmDatenException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
+                    iterator = register.getAllFilms().listIterator();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -28,6 +28,7 @@ public class Controller extends Application implements Initializable {
 
     Filmregister register;
     ListIterator<Film> iterator;
+    Film tmpCurrentFilm;
 
     /**
 	 * Declaration of GUI elements
@@ -212,13 +213,22 @@ public class Controller extends Application implements Initializable {
                     if (iterator == null) {
                         iterator = register.getAllFilms().listIterator();
                     }
-
-                    if (iterator.hasNext()){
-                        Film currentFilm = iterator.next();
-                        setTextFieldValues(currentFilm);
+                    if (iterator.hasNext()) {
+                        Film film = iterator.next();
+                        if (tmpCurrentFilm != null) {
+                            if (film.getTitelEN() == tmpCurrentFilm.getTitelEN()) {
+                                film = iterator.next();
+                            }
+                        }
+                        tmpCurrentFilm = film;
+                        setTextFieldValues(film);
                     }
-                } catch (Exception e) {
-                    consoleLabel.setText("Fehler: " + e.getMessage());
+                } catch (SQLException e) {
+                    consoleLabel.setText("SQL-Fehler: " + e.getMessage());
+                } catch (FilmDatenException e) {
+                    consoleLabel.setText("Fehler in der Klasse Film: " + e.getMessage());
+                } catch (NoSuchElementException e){
+                    consoleLabel.setText("Ende der Liste erreicht.");
                 }
             }
         });
@@ -227,15 +237,25 @@ public class Controller extends Application implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    if (iterator == null){
+                    if (iterator == null) {
                         iterator = register.getAllFilms().listIterator(register.getAllFilms().size());
                     }
-                    if ( iterator.hasPrevious() ){
-                        Film currentFilm = iterator.previous();
-                        setTextFieldValues(currentFilm);
+                    if (iterator.hasPrevious()) {
+                        Film film = iterator.previous();
+                        if (tmpCurrentFilm != null){
+                            if (film.getTitelEN() == tmpCurrentFilm.getTitelEN()){
+                                film = iterator.previous();
+                            }
+                        }
+                        tmpCurrentFilm = film;
+                        setTextFieldValues(film);
                     }
-                } catch (Exception e) {
-                    consoleLabel.setText("Fehler: " + e.getMessage());
+                } catch (SQLException e) {
+                    consoleLabel.setText("SQL-Fehler: " + e.getMessage());
+                } catch (FilmDatenException e) {
+                    consoleLabel.setText("Fehler in der Klasse Film: " + e.getMessage());
+                } catch (NoSuchElementException e){
+                    consoleLabel.setText("Ende der Liste erreicht.");
                 }
             }
         });
@@ -245,16 +265,18 @@ public class Controller extends Application implements Initializable {
             public void handle(ActionEvent event) {
                 if (!textFieldTitel.getText().isEmpty()) {
                     try {
-                        if (inputsCorrect()){
-                            register.saveFilm(createFilmObjectFromInputFields());
+                        if (inputsCorrect()) {
+                            Film currentFilm = createFilmObjectFromInputFields();
+                            register.saveFilm(currentFilm);
                             iterator = register.getAllFilms().listIterator();
-                            loadFormContent();
+                            loadFormContent(currentFilm);
+                            consoleLabel.setText("Film Added: " + currentFilm.getTitelDE());
                         }
                     } catch (FilmDatenException e) {
                         consoleLabel.setText("Fehler in der Klasse Film: " + e.getMessage());
                     } catch (SQLException e) {
                         consoleLabel.setText("SQL-Fehler: " + e.getMessage());
-                    } catch (NoSuchElementException e){
+                    } catch (NoSuchElementException e) {
                         consoleLabel.setText("Fehler: " + e.getMessage());
                     }
                 }
@@ -270,6 +292,7 @@ public class Controller extends Application implements Initializable {
                         register.deleteFilm(createFilmObjectFromInputFields());
                         eraseTextFields();
                         iterator = register.getAllFilms().listIterator();
+                        loadFormContent();
                     }
                 } catch (Exception e) {
                     consoleLabel.setText("Fehler beim Löschen des Films: " + e.getMessage());
@@ -311,7 +334,7 @@ public class Controller extends Application implements Initializable {
             this.consoleLabel.setText("No selection!");
             return false;
         } else if (option.get() == ButtonType.OK) {
-            this.consoleLabel.setText("Film deleted!");
+            this.consoleLabel.setText("Film " + film.getTitelDE() + " deleted!");
             return true;
         } else if (option.get() == ButtonType.CANCEL) {
             this.consoleLabel.setText("Cancelled!");
@@ -326,7 +349,23 @@ public class Controller extends Application implements Initializable {
             iterator = register.getAllFilms().listIterator();
             if (iterator.hasNext()){
                 Film currentFilm = iterator.next();
+                tmpCurrentFilm = currentFilm;
                 setTextFieldValues(currentFilm);
+            }
+        } catch (Exception e) {
+            consoleLabel.setText("Fehler beim laden der Inhalte: " + e.getMessage());
+        }
+    }
+
+    private void loadFormContent(Film film) {
+        try {
+            iterator = register.getAllFilms().listIterator();
+            while (iterator.hasNext()){
+                Film currentFilm = iterator.next();
+                if (currentFilm.equals(film)){
+                    tmpCurrentFilm = currentFilm;
+                    setTextFieldValues(currentFilm);
+                }
             }
         } catch (Exception e) {
             consoleLabel.setText("Fehler beim laden der Inhalte: " + e.getMessage());

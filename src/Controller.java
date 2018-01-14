@@ -123,7 +123,7 @@ public class Controller extends Application implements Initializable {
     private AnchorPane anchorPaneTab;
 
     @FXML
-    private TableView<filmTableEntry> tableView;
+    private TableView<FilmGUITableEntry> tableView;
 
     @FXML
     private TableColumn columnTitel;
@@ -373,30 +373,30 @@ public class Controller extends Application implements Initializable {
 
     private void loadTableContent() throws Exception {
         columnTitel.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("titelDE")
+                new PropertyValueFactory<FilmGUITableEntry, String>("titelDE")
         );
         columnDtTitel.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("titelEN")
+                new PropertyValueFactory<FilmGUITableEntry, String>("titelEN")
         );
         columnJahr.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("jahr")
+                new PropertyValueFactory<FilmGUITableEntry, String>("jahr")
         );
         columnSprache.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("sprache")
+                new PropertyValueFactory<FilmGUITableEntry, String>("sprache")
         );
         columnDarsteller.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("darsteller")
+                new PropertyValueFactory<FilmGUITableEntry, String>("darsteller")
         );
         columnFsk.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("fsk")
+                new PropertyValueFactory<FilmGUITableEntry, String>("fsk")
         );
         columnLaenge.setCellValueFactory(
-                new PropertyValueFactory<filmTableEntry, String>("laenge")
+                new PropertyValueFactory<FilmGUITableEntry, String>("laenge")
         );
 
-        ObservableList<filmTableEntry> data = FXCollections.observableArrayList();
+        ObservableList<FilmGUITableEntry> data = FXCollections.observableArrayList();
         for (Film film : register.getAllFilms()){
-            data.add(new filmTableEntry(film));
+            data.add(new FilmGUITableEntry(film));
         }
         tableView.setItems(data);
     }

@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller extends Application implements Initializable {
@@ -39,6 +41,9 @@ public class Controller extends Application implements Initializable {
 
     @FXML
     private AnchorPane anchorPaneListe;
+
+    @FXML
+    private Label consoleLabel;
 
     @FXML
     private HBox hboxListe;
@@ -139,16 +144,25 @@ public class Controller extends Application implements Initializable {
     @FXML
     private TableColumn<?, ?> columnLaenge;
     
-    
-	private Stage stage;
+    private Stage stage;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             register = new Filmregister();
             setupListeners();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch(FilmDatenException e){
+            consoleLabel.setText("Fehler in der Klasse Film:  " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            consoleLabel.setText("Fehler, Klasse nicht gefunden: " + e.getMessage());
+        } catch (SQLException e) {
+            if(e.getMessage().contains("link")){
+                consoleLabel.setText("Datenbank nicht gestartet?  SQL-Fehler: " + e.getMessage());
+            } else {
+                consoleLabel.setText("SQL-Fehler: " + e.getMessage());
+            }
         }
     }
 
@@ -204,7 +218,7 @@ public class Controller extends Application implements Initializable {
                         setTextFieldValues(currentFilm);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    consoleLabel.setText("Fehler: " + e.getMessage());
                 }
             }
         });
@@ -221,7 +235,7 @@ public class Controller extends Application implements Initializable {
                         setTextFieldValues(currentFilm);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    consoleLabel.setText("Fehler: " + e.getMessage());
                 }
             }
         });
@@ -234,14 +248,14 @@ public class Controller extends Application implements Initializable {
                         if (inputsCorrect()){
                             register.saveFilm(createFilmObjectFromInputFields());
                             iterator = register.getAllFilms().listIterator();
-                            iterator.previous();
+                            loadFormContent();
                         }
                     } catch (FilmDatenException e) {
-                        e.printStackTrace();
+                        consoleLabel.setText("Fehler in der Klasse Film: " + e.getMessage());
                     } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        consoleLabel.setText("SQL-Fehler: " + e.getMessage());
+                    } catch (NoSuchElementException e){
+                        consoleLabel.setText("Fehler: " + e.getMessage());
                     }
                 }
             }
@@ -250,15 +264,20 @@ public class Controller extends Application implements Initializable {
         this.buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 try {
-                    register.deleteFilm(createFilmObjectFromInputFields());
-                    eraseTextFields();
-                    iterator = register.getAllFilms().listIterator();
+                    if (showDeletionConfirmationAlert(createFilmObjectFromInputFields())){
+                        register.deleteFilm(createFilmObjectFromInputFields());
+                        eraseTextFields();
+                        iterator = register.getAllFilms().listIterator();
+                    }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    consoleLabel.setText("Fehler beim Löschen des Films: " + e.getMessage());
                 }
             }
         });
+
+
 
         this.tabPane.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Tab>() {
@@ -268,7 +287,7 @@ public class Controller extends Application implements Initializable {
                             try {
                                 loadTableContent();
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                consoleLabel.setText("Fehler beim laden des Tabellen-Inhalts: " + e.getMessage());
                             }
                         } else {
                             loadFormContent();
@@ -276,6 +295,30 @@ public class Controller extends Application implements Initializable {
                     }
                 }
         );
+    }
+
+    // Show a Information Alert with header Text
+    private boolean showDeletionConfirmationAlert(Film film) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Film");
+        alert.setHeaderText("Are you sure you want to delete the following Film:");
+        alert.setContentText(film.getTitelDE());
+
+        // option != null.
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if (option.get() == null) {
+            this.consoleLabel.setText("No selection!");
+            return false;
+        } else if (option.get() == ButtonType.OK) {
+            this.consoleLabel.setText("Film deleted!");
+            return true;
+        } else if (option.get() == ButtonType.CANCEL) {
+            this.consoleLabel.setText("Cancelled!");
+            return false;
+        } else {
+            return false;
+        }
     }
 
     private void loadFormContent() {
@@ -286,7 +329,7 @@ public class Controller extends Application implements Initializable {
                 setTextFieldValues(currentFilm);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            consoleLabel.setText("Fehler beim laden der Inhalte: " + e.getMessage());
         }
     }
 
@@ -295,7 +338,6 @@ public class Controller extends Application implements Initializable {
         for (Film film : register.getAllFilms()){
             data.add(film);
         }
-        System.out.println(data);
         tableView.setItems(data);
     }
 
@@ -312,12 +354,13 @@ public class Controller extends Application implements Initializable {
 
     private boolean inputsCorrect() {
         if (textFieldTitel.getText().isEmpty()){
-            System.out.println("Englischer Titel darf nicht leer sein.");
+
+            consoleLabel.setText("Englischer Titel darf nicht leer sein.");
             return false;
         }
 
         if (textFieldDtTitel.getText().isEmpty()){
-            System.out.println("Deutscher Titel darf nicht leer sein");
+            consoleLabel.setText("Deutscher Titel darf nicht leer sein.");
             return false;
         }
         return true;

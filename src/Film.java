@@ -21,6 +21,7 @@ public class Film
 	private  String sprache;
 	// Wichtige Darsteller
 	private  String darsteller;
+
 /*Ende der Klassen Variablen -----------------------------------------*/
 
 	/**

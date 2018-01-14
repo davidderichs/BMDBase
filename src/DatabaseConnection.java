@@ -1,3 +1,5 @@
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,13 +16,11 @@ public class DatabaseConnection {
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
 
-    DatabaseConnection () throws Exception {
+    DatabaseConnection () throws SQLException, CommunicationsException, ClassNotFoundException {
         // This will load the MySQL driver, each DB has its own driver
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
-        this.connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/bmdbase?"
-                        + "user=root");
+        this.connect = DriverManager.getConnection("jdbc:mysql://localhost/bmdbase?" + "user=root");
     }
 
     public boolean addFilm(Film film) throws SQLException{
@@ -112,7 +112,7 @@ public class DatabaseConnection {
         return convertToJavaObject(resultSet);
     }
 
-    public ArrayList<Film> getAllFilms() throws Exception{
+    public ArrayList<Film> getAllFilms() throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         // Result set get the result of the SQL query
@@ -145,7 +145,7 @@ public class DatabaseConnection {
             return new Film(titelDE, titleEN, Integer.parseInt(getYearFromDate(date)), fsk, laenge, sprache, schauspieler);
     }
 
-    private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws Exception{
+    private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws SQLException, FilmDatenException {
         ArrayList<Film> filmList = new ArrayList<Film>();
         while (resultSet.next()) {
             String id = resultSet.getString("id");

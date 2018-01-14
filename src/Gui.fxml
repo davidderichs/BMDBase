@@ -98,6 +98,7 @@
                 </Tab>
               </tabs>
             </TabPane>
+            <Label fx:id="consoleLabel" layoutX="50.0" layoutY="580.0" minWidth="700.0" textFill="#1100ff" />
          </children>
       </AnchorPane>
    </children>

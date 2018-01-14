@@ -9,7 +9,7 @@ public class Filmregister implements IFilmregister {
     private DatabaseConnection connection;
     private ArrayList<Film> films;
 
-    public Filmregister() throws Exception {
+    public Filmregister() throws FilmDatenException, SQLException, ClassNotFoundException {
         this.connection = new DatabaseConnection();
         this.films = this.connection.getAllFilms();
     }
@@ -32,13 +32,13 @@ public class Filmregister implements IFilmregister {
     }
 
     @Override
-    public ArrayList<Film> getAllFilms() throws Exception {
+    public ArrayList<Film> getAllFilms() throws FilmDatenException, SQLException {
         this.films = this.connection.getAllFilms();
         return this.films;
     }
 
     @Override
-    public boolean saveFilm(Film film) throws Exception {
+    public boolean saveFilm(Film film) throws FilmDatenException, SQLException {
         boolean addedToDatabase = this.connection.addFilm(film);
         if (addedToDatabase){
             this.films = this.connection.getAllFilms();

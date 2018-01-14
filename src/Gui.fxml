@@ -86,9 +86,9 @@
                                 <columns>
                                   <TableColumn fx:id="columnTitel" prefWidth="140.0" text="Titel" />
                                   <TableColumn fx:id="columnDtTitel" prefWidth="140.0" text="dt. Titel" />
-                                    <TableColumn fx:id="columnRegie" prefWidth="140.0" text="Regie" />
-                                    <TableColumn fx:id="columnGenre" prefWidth="100.0" text="Genre" />
-                                    <TableColumn fx:id="columnStudio" prefWidth="100.0" text="Studio" />
+                                    <TableColumn fx:id="columnSprache" prefWidth="140.0" text="Sprache" />
+                                    <TableColumn fx:id="columnJahr" prefWidth="100.0" text="Jahr" />
+                                    <TableColumn fx:id="columnDarsteller" prefWidth="100.0" text="Darsteller" />
                                     <TableColumn fx:id="columnFsk" prefWidth="60.0" text="FSK" />
                                     <TableColumn fx:id="columnLaenge" prefWidth="100.0" text="Länge" />
                                 </columns>

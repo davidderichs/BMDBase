@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -122,32 +123,30 @@ public class Controller extends Application implements Initializable {
     private AnchorPane anchorPaneTab;
 
     @FXML
-    private TableView<Film> tableView;
+    private TableView<filmTableEntry> tableView;
 
     @FXML
-    private TableColumn<?, ?> columnTitel;
+    private TableColumn columnTitel;
 
     @FXML
-    private TableColumn<?, ?> columnDtTitel;
+    private TableColumn columnDtTitel;
 
     @FXML
-    private TableColumn<?, ?> columnRegie;
+    private TableColumn columnJahr;
 
     @FXML
-    private TableColumn<?, ?> columnGenre;
+    private TableColumn columnSprache;
 
     @FXML
-    private TableColumn<?, ?> columnStudio;
+    private TableColumn columnDarsteller;
 
     @FXML
-    private TableColumn<?, ?> columnFsk;
+    private TableColumn columnFsk;
 
     @FXML
-    private TableColumn<?, ?> columnLaenge;
+    private TableColumn columnLaenge;
     
     private Stage stage;
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -373,9 +372,31 @@ public class Controller extends Application implements Initializable {
     }
 
     private void loadTableContent() throws Exception {
-        ObservableList<Film> data = FXCollections.observableArrayList();
+        columnTitel.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("titelDE")
+        );
+        columnDtTitel.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("titelEN")
+        );
+        columnJahr.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("jahr")
+        );
+        columnSprache.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("sprache")
+        );
+        columnDarsteller.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("darsteller")
+        );
+        columnFsk.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("fsk")
+        );
+        columnLaenge.setCellValueFactory(
+                new PropertyValueFactory<filmTableEntry, String>("laenge")
+        );
+
+        ObservableList<filmTableEntry> data = FXCollections.observableArrayList();
         for (Film film : register.getAllFilms()){
-            data.add(film);
+            data.add(new filmTableEntry(film));
         }
         tableView.setItems(data);
     }
@@ -464,7 +485,6 @@ public class Controller extends Application implements Initializable {
                 textFieldDarsteller.getText());
     }
 
-
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		this.stage = primaryStage;
@@ -473,7 +493,6 @@ public class Controller extends Application implements Initializable {
 	    primaryStage.setScene(new Scene(root, 800, 600));
 	    primaryStage.show();
 	}
-	
 
 	public static void main(String[] args) {
         launch(args);

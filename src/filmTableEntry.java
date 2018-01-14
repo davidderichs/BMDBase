@@ -3,8 +3,7 @@ import javafx.beans.property.SimpleStringProperty;
 /**
  * Created by David Derichs on 14.01.2018.
  */
-public class filmTableEntry {
-    private final SimpleStringProperty jahr;
+public class filmTableEntry {    private final SimpleStringProperty jahr;
     private final SimpleStringProperty laenge;
     private final SimpleStringProperty fsk;
     private final SimpleStringProperty titelDE;
@@ -12,7 +11,8 @@ public class filmTableEntry {
     private final SimpleStringProperty sprache;
     private final SimpleStringProperty darsteller;
 
-    private filmTableEntry(Film film){
+
+    public filmTableEntry(Film film){
         this.jahr = new SimpleStringProperty(Integer.toString(film.getJahr()));
         this.laenge = new SimpleStringProperty(Integer.toString(film.getLaenge()));
         this.fsk = new SimpleStringProperty(Integer.toString(film.getFsk()));

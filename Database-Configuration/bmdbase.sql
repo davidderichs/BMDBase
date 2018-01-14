@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 14, 2018 at 04:15 PM
+-- Generation Time: Jan 14, 2018 at 04:17 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -33,8 +33,8 @@ USE `bmdbase`;
 
 CREATE TABLE `bmdbase` (
   `id` int(11) NOT NULL,
-  `titel` varchar(300) NOT NULL,
-  `title` varchar(300) NOT NULL,
+  `titel` varchar(50) NOT NULL,
+  `title` varchar(50) NOT NULL,
   `regie` varchar(300) DEFAULT NULL,
   `genre` varchar(300) DEFAULT NULL,
   `schauspieler` varchar(300) DEFAULT NULL,
@@ -68,7 +68,9 @@ INSERT INTO `bmdbase` (`id`, `titel`, `title`, `regie`, `genre`, `schauspieler`,
 -- Indexes for table `bmdbase`
 --
 ALTER TABLE `bmdbase`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `titel` (`titel`),
+  ADD UNIQUE KEY `title` (`title`);
 
 --
 -- AUTO_INCREMENT for dumped tables

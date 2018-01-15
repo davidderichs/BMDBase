@@ -18,7 +18,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controller">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <children>
     <AnchorPane prefHeight="600.0" prefWidth="800.0">
       <children>
@@ -30,8 +30,8 @@
                   <children>
                     <HBox layoutX="43.0" layoutY="10.0" prefHeight="20.0" prefWidth="700.0" spacing="20.0">
                       <children>
-                        <Button fx:id="buttonPrevious" mnemonicParsing="false" text="&lt;" />
-                        <Button fx:id="buttonNext" mnemonicParsing="false" text="&gt;" />
+                        <Button fx:id="buttonPrevious" ellipsisString="&lt;" mnemonicParsing="false" text="&lt;" />
+                        <Button fx:id="buttonNext" ellipsisString="&gt;" mnemonicParsing="false" text="&gt;" />
                         <TextField fx:id="textFieldSearch" prefWidth="200.0">
                           <HBox.margin>
                             <Insets left="300.0" />
@@ -87,13 +87,13 @@
                   <children>
                     <TableView fx:id="tableView" layoutX="10.0" layoutY="14.0" prefHeight="540.0" prefWidth="780.0">
                       <columns>
-                        <TableColumn prefWidth="140.0" text="Titel" fx:id="columnTitel" />
-                        <TableColumn prefWidth="140.0" text="dt. Titel" fx:id="columnDtTitel" />
-                        <TableColumn prefWidth="140.0" text="Sprache" fx:id="columnSprache" />
-                        <TableColumn prefWidth="100.0" text="Jahr" fx:id="columnJahr" />
-                        <TableColumn prefWidth="100.0" text="Darsteller" fx:id="columnDarsteller" />
-                        <TableColumn prefWidth="60.0" text="FSK" fx:id="columnFsk" />
-                        <TableColumn prefWidth="100.0" text="Länge" fx:id="columnLaenge" />
+                        <TableColumn fx:id="columnTitel" prefWidth="140.0" text="Titel" />
+                        <TableColumn fx:id="columnDtTitel" prefWidth="140.0" text="dt. Titel" />
+                        <TableColumn fx:id="columnSprache" prefWidth="140.0" text="Sprache" />
+                        <TableColumn fx:id="columnJahr" prefWidth="100.0" text="Jahr" />
+                        <TableColumn fx:id="columnDarsteller" prefWidth="100.0" text="Darsteller" />
+                        <TableColumn fx:id="columnFsk" prefWidth="60.0" text="FSK" />
+                        <TableColumn fx:id="columnLaenge" prefWidth="100.0" text="Länge" />
                       </columns>
                     </TableView>
                   </children>

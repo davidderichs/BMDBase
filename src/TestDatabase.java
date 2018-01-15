@@ -12,11 +12,11 @@ public class TestDatabase {
     }
 
     public static void testUpdate() throws Exception {
-        DatabaseConnection connection = new DatabaseConnection();
-        Film film = new Film(2,"NeuerTitelaufDeutsch", "AnotherMovieTitle", 2018, 18, 140, "deutsch", "Johnny Depp");
-        System.out.print("Updating film: "+film.getTitelDE());
-        connection.updateFilm(film);
-        connection.close();
+//        DatabaseConnection connection = new DatabaseConnection();
+//        Film film = new Film(2,"NeuerTitelaufDeutsch", "AnotherMovieTitle", 2018, 18, 140, "deutsch", "Johnny Depp");
+//        System.out.print("Updating film: "+film.getTitelDE());
+//        connection.updateFilm(film);
+//        connection.close();
     }
 
     public static void testDeletion() throws Exception {

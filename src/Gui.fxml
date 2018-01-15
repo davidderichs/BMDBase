@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -12,94 +11,99 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
-   <children>
-      <AnchorPane prefHeight="600.0" prefWidth="800.0">
-         <children>
-            <TabPane fx:id="tabPane" layoutX="1.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab fx:id="tabListe" text="Liste">
-                  <content>
-                    <AnchorPane fx:id="anchorPaneListe" layoutX="43.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <HBox layoutX="43.0" layoutY="10.0" prefHeight="20.0" prefWidth="450.0" spacing="20.0">
-                                 <children>
-                                    <Button fx:id="buttonPrevious" mnemonicParsing="false" text="&lt;" />
-                                    <Button fx:id="buttonNext" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="&gt;" />
-                                 </children>
-                              </HBox>
-                              <HBox fx:id="hboxListe" layoutX="43.0" layoutY="60.0" prefHeight="208.0" prefWidth="424.0" spacing="20.0">
-                                 <children>
-                                    <VBox fx:id="vboxLabels" prefHeight="257.0" prefWidth="86.0" spacing="10.0">
-                                       <children>
-                                          <Label fx:id="labelTitel" prefHeight="26.0" text="Titel" />
-                                          <Label fx:id="labelDtTitel" prefHeight="26.0" text="Dt. Titel" />
-                                          <Label fx:id="labelJahr" prefHeight="26.0" text="Erscheinungsjahr" />
-                                          <Label fx:id="labelFSK" prefHeight="26.0" text="FSK" />
-                                          <Label fx:id="labelSprache" prefHeight="26.0" text="Sprache" />
-                                          <Label fx:id="labelLaenge" prefHeight="26.0" prefWidth="59.0" text="Länge" />
-                                          <Label fx:id="labelDarsteller" prefHeight="26.0" prefWidth="59.0" text="Hauptdarsteller" />
-                                       </children>
-                                    </VBox>
-                                    <VBox fx:id="vboxTextFields" prefHeight="342.0" prefWidth="270.0" spacing="10.0">
-                                       <children>
-                                          <TextField fx:id="textFieldTitel" />
-                                          <TextField fx:id="textFieldDtTitel" />
-                                          <TextField fx:id="textFieldJahr" />
-                                          <TextField fx:id="textFieldFSK" />
-                                          <TextField fx:id="textFieldSprache" />
-                                          <TextField fx:id="textFieldLaenge" prefHeight="26.0" prefWidth="270.0" />
-                                           <TextField fx:id="textFieldDarsteller" prefHeight="26.0" prefWidth="270.0" />
-                                       </children>
-                                    </VBox>
-                                    <VBox fx:id="vboxButtons" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
-                                       <children>
-                                          <Button fx:id="buttonAdd" minHeight="50.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="+">
-                                             <font>
-                                                <Font name="System Bold" size="25.0" />
-                                             </font>
-                                          </Button>
-                                          <Button fx:id="buttonDelete" minHeight="50.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="-">
-                                             <font>
-                                                <Font name="System Bold" size="25.0" />
-                                             </font>
-                                          </Button>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <ListView fx:id="listView" layoutX="43.0" layoutY="320.0" prefHeight="227.0" prefWidth="715.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab fx:id="tabTabelle" text="Tabelle">
-                  <content>
-                    <AnchorPane fx:id="anchorPaneTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                           <children>
-                              <TableView fx:id="tableView" layoutX="10.0" layoutY="14.0" prefHeight="540.0" prefWidth="780.0">
-                                <columns>
-                                  <TableColumn fx:id="columnTitel" prefWidth="140.0" text="Titel" />
-                                  <TableColumn fx:id="columnDtTitel" prefWidth="140.0" text="dt. Titel" />
-                                    <TableColumn fx:id="columnSprache" prefWidth="140.0" text="Sprache" />
-                                    <TableColumn fx:id="columnJahr" prefWidth="100.0" text="Jahr" />
-                                    <TableColumn fx:id="columnDarsteller" prefWidth="100.0" text="Darsteller" />
-                                    <TableColumn fx:id="columnFsk" prefWidth="60.0" text="FSK" />
-                                    <TableColumn fx:id="columnLaenge" prefWidth="100.0" text="Länge" />
-                                </columns>
-                              </TableView>
-                           </children></AnchorPane>
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-            <Label fx:id="consoleLabel" layoutX="50.0" layoutY="580.0" minWidth="700.0" textFill="#1100ff" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Controller">
+  <children>
+    <AnchorPane prefHeight="600.0" prefWidth="800.0">
+      <children>
+        <TabPane fx:id="tabPane" layoutX="1.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+          <tabs>
+            <Tab fx:id="tabListe" text="Liste">
+              <content>
+                <AnchorPane fx:id="anchorPaneListe" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                    <HBox layoutX="43.0" layoutY="10.0" prefHeight="20.0" prefWidth="700.0" spacing="20.0">
+                      <children>
+                        <Button fx:id="buttonPrevious" mnemonicParsing="false" text="&lt;" />
+                        <Button fx:id="buttonNext" mnemonicParsing="false" text="&gt;" />
+                        <TextField fx:id="textFieldSearch" prefWidth="200.0">
+                          <HBox.margin>
+                            <Insets left="300.0" />
+                          </HBox.margin>
+                        </TextField>
+                        <Button fx:id="buttonSearch" mnemonicParsing="false" prefWidth="120.0" text="Search" />
+                      </children>
+                    </HBox>
+                    <HBox fx:id="hboxListe" layoutX="43.0" layoutY="60.0" prefHeight="208.0" prefWidth="424.0" spacing="20.0">
+                      <children>
+                        <VBox fx:id="vboxLabels" prefHeight="257.0" prefWidth="86.0" spacing="10.0">
+                          <children>
+                            <Label fx:id="labelTitel" prefHeight="26.0" text="Titel" />
+                            <Label fx:id="labelDtTitel" prefHeight="26.0" text="Dt. Titel" />
+                            <Label fx:id="labelJahr" prefHeight="26.0" text="Erscheinungsjahr" />
+                            <Label fx:id="labelFSK" prefHeight="26.0" text="FSK" />
+                            <Label fx:id="labelSprache" prefHeight="26.0" text="Sprache" />
+                            <Label fx:id="labelLaenge" prefHeight="26.0" prefWidth="59.0" text="Länge" />
+                            <Label fx:id="labelDarsteller" prefHeight="26.0" prefWidth="59.0" text="Hauptdarsteller" />
+                          </children>
+                        </VBox>
+                        <VBox fx:id="vboxTextFields" prefHeight="342.0" prefWidth="270.0" spacing="10.0">
+                          <children>
+                            <TextField fx:id="textFieldTitel" />
+                            <TextField fx:id="textFieldDtTitel" />
+                            <TextField fx:id="textFieldJahr" />
+                            <TextField fx:id="textFieldFSK" />
+                            <TextField fx:id="textFieldSprache" />
+                            <TextField fx:id="textFieldLaenge" prefHeight="26.0" prefWidth="270.0" />
+                            <TextField fx:id="textFieldDarsteller" prefHeight="26.0" prefWidth="270.0" />
+                          </children>
+                        </VBox>
+                        <VBox fx:id="vboxButtons" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                          <children>
+                            <Button fx:id="buttonAdd" minHeight="50.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="+">
+                              <font>
+                                <Font name="System Bold" size="25.0" fx:id="x1" />
+                              </font>
+                            </Button>
+                            <Button fx:id="buttonDelete" font="$x1" minHeight="50.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="-" />
+                          </children>
+                        </VBox>
+                      </children>
+                    </HBox>
+                    <ListView fx:id="listView" layoutX="43.0" layoutY="320.0" prefHeight="227.0" prefWidth="715.0" />
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+            <Tab fx:id="tabTabelle" text="Tabelle">
+              <content>
+                <AnchorPane fx:id="anchorPaneTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                    <TableView fx:id="tableView" layoutX="10.0" layoutY="14.0" prefHeight="540.0" prefWidth="780.0">
+                      <columns>
+                        <TableColumn prefWidth="140.0" text="Titel" fx:id="columnTitel" />
+                        <TableColumn prefWidth="140.0" text="dt. Titel" fx:id="columnDtTitel" />
+                        <TableColumn prefWidth="140.0" text="Sprache" fx:id="columnSprache" />
+                        <TableColumn prefWidth="100.0" text="Jahr" fx:id="columnJahr" />
+                        <TableColumn prefWidth="100.0" text="Darsteller" fx:id="columnDarsteller" />
+                        <TableColumn prefWidth="60.0" text="FSK" fx:id="columnFsk" />
+                        <TableColumn prefWidth="100.0" text="Länge" fx:id="columnLaenge" />
+                      </columns>
+                    </TableView>
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+          </tabs>
+        </TabPane>
+        <Label fx:id="consoleLabel" layoutX="50.0" layoutY="580.0" minWidth="700.0" textFill="#1100ff" />
+      </children>
+    </AnchorPane>
+  </children>
 </AnchorPane>

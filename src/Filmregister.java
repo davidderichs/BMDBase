@@ -28,7 +28,13 @@ public class Filmregister implements IFilmregister {
 
     @Override
     public Film getFilmByTitelEN(String title) throws FilmDatenException, SQLException {
-        return this.connection.getFilmByTitleEN(title);
+        if (title == null) {
+        	throw new FilmDatenException();
+        } 
+        if (title.isEmpty()){
+        	throw new FilmDatenException();
+        }
+    	return this.connection.getFilmByTitleEN(title);
     }
 
     @Override
@@ -55,6 +61,15 @@ public class Filmregister implements IFilmregister {
     @Override
     public boolean deleteFilm(Film film) throws FilmDatenException, SQLException {
         return this.connection.removeFilm(film);
+    }
+    
+    public boolean isFilmInDatabase(String titel) throws FilmDatenException, SQLException
+    {
+		for (Film film : this.getAllFilms()) {
+			if (film.getTitelDE().equals(titel)) return true;
+		}
+    	return false;
+    	
     }
 
 

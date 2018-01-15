@@ -147,6 +147,12 @@ public class Controller extends Application implements Initializable {
     private TableColumn columnLaenge;
     
     private Stage stage;
+    
+    @FXML
+    private Button buttonSearch;
+    
+    @FXML
+    private TextField textFieldSearch;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -174,6 +180,26 @@ public class Controller extends Application implements Initializable {
     }
 
     private void setupListeners(){
+    	
+    	this.buttonSearch.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				String title = textFieldSearch.getText();
+				try {
+					if (register.isFilmInDatabase(title)) {
+						Film film = register.getFilmByTitleDE(title);
+						setTextFieldValues(film);
+					}
+				} catch (FilmDatenException | SQLException e) {
+					consoleLabel.setText("Fehler in der Klasse Film: " + e.getMessage());
+					
+				}
+				
+				
+			}
+    		
+		});
 
         this.textFieldFSK.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -294,7 +320,7 @@ public class Controller extends Application implements Initializable {
                         loadFormContent();
                     }
                 } catch (Exception e) {
-                    consoleLabel.setText("Fehler beim Löschen des Films: " + e.getMessage());
+                    consoleLabel.setText("Fehler beim LÃ¶schen des Films: " + e.getMessage());
                 }
             }
         });

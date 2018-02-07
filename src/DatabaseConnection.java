@@ -11,11 +11,25 @@ import java.util.ArrayList;
 
 public class DatabaseConnection {
 
+    // SQL-Connection Object zur Kommunikation mit dem Server
     private Connection connect = null;
+    // SQL-Statement, das mittels des Connection-Objects an den Server verschickt wird.
     private Statement statement = null;
+    // Kann zum Erstellen von größeren Statements verwendet werden. Hier ungenutzt.
     private PreparedStatement preparedStatement = null;
+    // Daten, die z.B. nach einer versendeten Query (Statement) vom Server als Antwort zurückkommen
+    // Üblicherweise Daten, die von einer Select-Abfrage kommen.
     private ResultSet resultSet = null;
 
+    /***
+     * Datenbank Verbindung aufnehmen.
+     * Dazu wird der JDBC-Treiber für MySQL genutzt.
+     * Über den Driver-Manager wird eine Connection mit URL und User-Informationen aufgebaut
+     * und im Connection-Object gespeichert.
+     * @throws SQLException
+     * @throws CommunicationsException
+     * @throws ClassNotFoundException
+     */
     DatabaseConnection () throws SQLException, CommunicationsException, ClassNotFoundException {
         // This will load the MySQL driver, each DB has its own driver
         Class.forName("com.mysql.jdbc.Driver");
@@ -23,6 +37,14 @@ public class DatabaseConnection {
         this.connect = DriverManager.getConnection("jdbc:mysql://localhost/bmdbase?" + "user=root");
     }
 
+    /**
+     * Fügt per Insert-Statement einen Datensatz in die Datenbank ein.
+     * Die Daten nimmt die Methode aus einem übergebenen Film-Objekt.
+     * Die einzelnen Attribute werden in String-Variablen übersetzt und dann dem Statement zugewiesen.
+     * @param film Film-Java-Objekt, welches die Daten für das Statement enthält.
+     * @return War das Statement erfolgreich, gibt die Methode true zurück.
+     * @throws SQLException
+     */
     public boolean addFilm(Film film) throws SQLException{
         statement = connect.createStatement();
         String statementStart = "insert into  bmdbase.bmdbase (titel, title, schauspieler, fsk, sprache, laenge, date) ";
@@ -45,6 +67,14 @@ public class DatabaseConnection {
         return (statement.executeUpdate(statementStart+statementEnd+";")==1);
     }
 
+    /**
+     * Ändert bzw. Updated einen Datensatz in der Datenbank.
+     * Die Daten nimmt die Methode aus einem übergebenen Film-Objekt.
+     * Die einzelnen Attribute werden in String-Variablen übersetzt und dann dem Statement zugewiesen.
+     * @param film Film-Java-Objekt, welches die Daten für das Statement enthält.
+     * @return War das Statement erfolgreich, gibt die Methode true zurück.
+     * @throws SQLException
+     */
     public boolean updateFilm(Film film) throws SQLException{
         statement = connect.createStatement();
         String titel =  "'"+film.getTitelDE()+"'";
@@ -59,6 +89,15 @@ public class DatabaseConnection {
         return (statement.executeUpdate(statementStart+statementEnd+";")==1);
     }
 
+    /**
+     * Löscht einen Datensatz in der Datenbank.
+     * Dazu wird die ID des Java-Film-Objektes genutzt, welche der ID in der Datenbank entspricht.
+     * Ist diese Information nicht verfügbar, wird der Deutsche Titel zum Löschen genutzt.
+     * Ist dieser ebenfalls nicht verfügbar, wird der Entlische Titel zum Löschen genutzt.
+     * @param film Film-Objekt, welches aus der Datenbank gelöscht werden soll.
+     * @return Liefert true, wenn der Datensatz erfolgreich gelöscht wurde.
+     * @throws SQLException
+     */
     public boolean removeFilm(Film film) throws SQLException{
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -73,6 +112,12 @@ public class DatabaseConnection {
         return false;
     }
 
+    /**
+     * Hilfsmethode, die einen Film anhand der ID aus der Datenbank löscht.
+     * @param id ID das Java-Film-Objektes und des Datensatzes.
+     * @return Liefert true, wenn Datensatz erfolgreich gelöscht wurde.
+     * @throws SQLException
+     */
     public boolean removeFilmByID(int id) throws SQLException{
         statement = connect.createStatement();
         String statementStart = "DELETE FROM bmdbase.bmdbase WHERE id= '"+id+"' ;";
@@ -80,6 +125,12 @@ public class DatabaseConnection {
         return (statement.executeUpdate(statementStart)==1);
     }
 
+    /**
+     * Hilfsmethode, die einen Film anhand des Deutschen Titels aus der Datenbank löscht.
+     * @param title Deutscher Titel des Java-Film-Objektes und des Datensatzes.
+     * @return Liefert true, wenn Datensatz erfolgreich gelöscht wurde.
+     * @throws SQLException
+     */
     public boolean removeFilmByTitleDE(String title) throws SQLException{
         statement = connect.createStatement();
         String statementStart = "DELETE FROM bmdbase.bmdbase WHERE titel= '"+title+"' ;";
@@ -87,17 +138,42 @@ public class DatabaseConnection {
         return (statement.executeUpdate(statementStart)==1);
     }
 
+    /**
+     * Hilfsmethode, die einen Film anhand des Englischen Titels aus der Datenbank löscht.
+     * @param title Englischer Titel des Java-Film-Objektes und des Datensatzes.
+     * @return Liefert true, wenn Datensatz erfolgreich gelöscht wurde.
+     * @throws SQLException
+     */
     public boolean removeFilmByTitleEN(String title) throws SQLException{
         statement = connect.createStatement();
         String statementStart = "DELETE FROM bmdbase.bmdbase WHERE title= '"+title+"' ;";
         return (statement.executeUpdate(statementStart)==1);
     }
 
+    /**
+     * Sucht anhand einer ID in der Datenbank nach einem Datensatz.
+     * Liefert ein Java-Objekt vom Typ Film zurück, falls dieser gefunden wurde.
+     * Zum Umwandeln des resultSets in ein Java-Objekt wird eine Hilfsmethode verwendet.
+     * @param id ID des Film-Objekts
+     * @return Film-Objekt, welches zuvor aus der Datenbank ausgelesen und in ein Java-Objekt umgewandelt wurde.
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     public Film getFilmByID(int id) throws SQLException, FilmDatenException {
         statement = connect.createStatement();
         resultSet = statement.executeQuery("select * from bmdbase.bmdbase where id = " + id + ";");
         return convertToJavaObject(resultSet);
     }
+
+    /**
+     * Sucht anhand des Deutschen Titels in der Datenbank nach einem Datensatz.
+     * Liefert ein Java-Objekt vom Typ Film zurück, falls dieser gefunden wurde.
+     * Zum Umwandeln des resultSets in ein Java-Objekt wird eine Hilfsmethode verwendet.
+     * @param titel Deutscher Titel des Film-Objekts
+     * @return Film-Objekt, welches zuvor aus der Datenbank ausgelesen und in ein Java-Objekt umgewandelt wurde.
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     public Film getFilmByTitleDE(String titel) throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -105,6 +181,15 @@ public class DatabaseConnection {
         return convertToJavaObject(resultSet);
     }
 
+    /**
+     * Sucht anhand des Englischen Titels in der Datenbank nach einem Datensatz.
+     * Liefert ein Java-Objekt vom Typ Film zurück, falls dieser gefunden wurde.
+     * Zum Umwandeln des resultSets in ein Java-Objekt wird eine Hilfsmethode verwendet.
+     * @param title Englischer Titel des Film-Objekts
+     * @return Film-Objekt, welches zuvor aus der Datenbank ausgelesen und in ein Java-Objekt umgewandelt wurde.
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     public Film getFilmByTitleEN(String title) throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -112,6 +197,13 @@ public class DatabaseConnection {
         return convertToJavaObject(resultSet);
     }
 
+    /**
+     * Liefert alle Filme, die sich in der Datenbank befinden als Liste von Java-Objekten vom Typ Film aus.
+     * Zum Umwandeln des resultSets in ein Java-Objekt wird eine Hilfsmethode verwendet.
+     * @return List von Objekte des Typs Film
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     public ArrayList<Film> getAllFilms() throws SQLException, FilmDatenException {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -120,6 +212,13 @@ public class DatabaseConnection {
         return convertToJavaObjectList(resultSet);
     }
 
+    /**
+     * Hilfsmethode, um ein ResultSet aus der Datenbank in ein Java-Objekt vom Typ Film zu erzeugen.
+     * @param resultSet ResultSet, dass Informationen vom SQL-Server beinhaltet, z.B. nach einer SELECT-Abfrage.
+     * @return Java-Objekt vom Typ Film
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     private Film convertToJavaObject(ResultSet resultSet) throws SQLException, FilmDatenException {
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
@@ -145,6 +244,13 @@ public class DatabaseConnection {
             return new Film(titelDE, titleEN, Integer.parseInt(getYearFromDate(date)), fsk, laenge, sprache, schauspieler);
     }
 
+    /**
+     * Wandelt ein ResultSet, welches mehrere Datensätze beinhaltet in eine Liste von Java-Objekte des Typs Film um.
+     * @param resultSet
+     * @return Liste von Film-Objekten.
+     * @throws SQLException
+     * @throws FilmDatenException
+     */
     private ArrayList<Film> convertToJavaObjectList(ResultSet resultSet) throws SQLException, FilmDatenException {
         ArrayList<Film> filmList = new ArrayList<Film>();
         while (resultSet.next()) {
@@ -172,11 +278,22 @@ public class DatabaseConnection {
         return filmList;
     }
 
+    /**
+     * Hilfs-Methode, um nur das Jahr aus einem Objekt vom Typ Date zu erhalten.
+     * @param date Date-Objekt
+     * @return String, der das Jahr beinhaltet
+     */
     private String getYearFromDate(Date date){
         SimpleDateFormat formatNowYear = new SimpleDateFormat("yyyy");
         return formatNowYear.format(date);
     }
 
+    /**
+     * Konsolenausgabe. Wird genutzt, um Antworten vom SQL-Server zu überprüfen oder einfach auf dern Konsole auszugeben.
+     * Kann z.B. bei JUnit-Tests genutzt werden.
+     * @param resultSet ResultSet vom Server
+     * @throws SQLException
+     */
     private void printDatabaseInformation(ResultSet resultSet) throws SQLException {
         //  Now get some metadata from the database
         // Result set get the result of the SQL query
@@ -187,6 +304,12 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Konsolenausgabe. Wird genutzt, um Antworten vom SQL-Server zu überprüfen oder einfach auf dern Konsole auszugeben.
+     * Kann z.B. bei JUnit-Tests genutzt werden.
+     * @param resultSet ResultSet vom Server
+     * @throws SQLException
+     */
     private void printDatasetInformation(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
@@ -207,7 +330,10 @@ public class DatabaseConnection {
         }
     }
 
-    // You need to close the resultSet
+    /**
+     * Methode, zum Schließen einer SQL-Verbindung.
+     * Sehr wichtig !!!
+     */
     public void close() {
         try {
             if (resultSet != null) {
